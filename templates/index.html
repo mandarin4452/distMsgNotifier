@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>재난경보 알리미</title>
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon.ico') }}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+        <!--W3 CSS-->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black">
+            <div class="container">
+                <a class="navbar-brand js-scroll-trigger" href="#page-top">Main</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu<i class="fas fa-bars ml-1"></i></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ml-auto">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">Table</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Email Service</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <!--
+        <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading">Welcome To Our Studio!</div>
+                <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
+                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
+            </div>
+        </header>
+        -->
+        <!-- Services-->
+        <section class="page-section" id="services"style="background-color: black;">
+            <div class="container">
+                <div class="text-center" style="margin-top: 10px; color:white">
+                    <h1 class="section-heading text-uppercase">재난 문자 알리미</h1>
+                    <h4 class="">전국의 재난 문자 내용들이 표시됩니다.</h4>
+                    <h4 class="">이메일로 최근 내용을 확인하고 싶으시면 하단에 이메일을 등록해주세요!</h4>
+                    <p style="color:gray">최근 내역을 확인하기 위해선 update 버튼을 눌러주세요!</p>
+                    <a href="/update" style="margin-bottom: 10px;" class="btn btn-info">Update</a>
+                </div>
+                
+            <div class="table table-responsive">
+                <table class="table  table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Loc</th>
+                            <th>Content</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cont in cont_list.items %}
+                        <tr class="table-dark" data-toggle="modal" data-target="#myModal">
+                            <!-- INFO Modal -->
+                            <div class="modal fade" id="myModal">
+                                <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                    <h4 class="modal-title">Details</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                    <p><b>Date</b><br>{{ cont.date }}</p>
+                                    <hr>
+                                    <p><b>Location</b><br>{{ cont.location }}</p>
+                                    <hr>
+                                    <p><b>Contents</b><br> {{ cont.content }}</p>
+                                    </div>
+                                    
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                    
+                                </div>
+                                </div>
+                            </div>
+                            <td>{{ cont.date|strftime }}</td>
+                            {% if cont.location|length > 20 %}
+                            <td>{{ cont.location[:20] }}...</td>
+                            {% else %}
+                            <td>{{ cont.location }}</td>
+                            {% endif %}
+                            {% if cont.content|length > 25 %}
+                            <td>{{ cont.content[:25] }}...</td>
+                            {% else %}
+                            <td>{{ cont.content }}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <ul class="pagination justify-content-center" style="margin-top: 10px;">
+                    <!-- Previous Page-->
+                    {% if cont_list.has_prev %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('index', page = cont_list.prev_num) }}">Previous</a></li>
+                    {% endif %}
+                    
+                    
+                    {% for page_num in cont_list.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != cont_list.page %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('index',page=  page_num) }}">{{ page_num }}</a></li>
+                            {% else %}
+                                <li class="active"><a class="page-link" href="{{ url_for('index',page= page_num) }}">{{ page_num }}</a></li>
+                            {% endif %}
+                        {% else %}
+                        <li><span class="ellipsis" style="white-space; nowrap; overflow: hidden; text-overflow : ellipsis"></span></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    <!-- Next Page -->
+                    {% if cont_list.has_next %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('index',page=cont_list.next_num) }}">Next</a></li>
+                    {% endif %}
+                    
+                </ul>
+                
+            </div>
+                
+            </div>
+        </section>
+        
+        
+        <!-- Contact-->
+        <section class="page-section" id="contact">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">이메일로 알림 받기</h2>
+                    <h3 class="section-subheading text-muted">새로 수신된 재난 문자를 받을 이메일 주소와 지역을 입력해주세요!</h3>
+                    <h3 class="section-subheading text-muted">메일은 매 1시간 단위로 발송됩니다.</h3>
+                </div>
+                <form id="contactForm" name="sentMessage" novalidate="novalidate" action ="/mail" method="POST">
+                    <div class="row align-items-stretch mb-5">
+                        <div class="col">
+                            <div class="form-group">
+                                <input class="form-control" name="loc" type="text" placeholder="지역 ex) 서울, 경기, 제주 ..." required="required" data-validation-required-message="Please enter your email address." />
+                            </div>
+                            <p>_</p>
+                        </div>    
+                    </div>
+                    <div class="row align-items-stretch mb-5" >
+                        <div class="col">
+                            <div class="form-group">
+                                <input class="form-control" name="email" type="email" placeholder="이메일" required="required" data-validation-required-message="Please enter your email address." />
+                                
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="text-center">
+                        <div id="success"></div>
+                        <button class="btn btn-primary btn-xl text-uppercase" id="sendMessageButton" type="submit">등록하기</button>
+                    </div>
+                </form>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <!-- Do something with the message -->
+                            {{ message }}
+
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </section>
+        
+      
+        
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static',filename='js/scripts.js') }}"></script>
+    </body>
+</html>
