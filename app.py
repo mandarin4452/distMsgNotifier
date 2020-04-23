@@ -92,19 +92,18 @@ def update():
 
 @app.route('/mail', methods=['POST','GET'])
 def mail_store():
-    if request.method == 'POST':
-        location = request.form['loc']
-        email = request.form['email']
-        conn = sqlite3.connect('data.db')
-        cur = conn.cursor()
-        sql = 'insert into clients values (?,?)'
-
-				try :
-        	cur.execute(sql,(location,email))
-        	conn.commit()
-        	return redirect('/')
-				except :
-					return redirect('/')
+	if request.method == 'POST':
+			location = request.form['loc']
+			email = request.form['email']
+			conn = sqlite3.connect('data.db')
+			cur = conn.cursor()
+			sql = 'insert into clients values (?,?)'
+			try:
+				cur.execute(sql,(location,email))
+				conn.commit()
+				return redirect('/')
+			except :
+				return redirect('/')
 
 
 
