@@ -98,10 +98,14 @@ def mail_store():
         conn = sqlite3.connect('data.db')
         cur = conn.cursor()
         sql = 'insert into clients values (?,?)'
-        cur.execute(sql,(location,email))
-        conn.commit()
 
-        return redirect('/')
+				try :
+        	cur.execute(sql,(location,email))
+        	conn.commit()
+        	return redirect('/')
+				except :
+					return redirect('/')
+
 
 
 app.run(host="0.0.0.0",port=5000)
