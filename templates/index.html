@@ -20,7 +20,7 @@
     </head>
     <body id="page-top">
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:#212529">
             <div class="container">
                 <a class="navbar-brand js-scroll-trigger" href="#page-top">Main</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu<i class="fas fa-bars ml-1"></i></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -42,7 +42,7 @@
         </header>
         -->
         <!-- Services-->
-        <section class="page-section" id="services"style="background-color: black;">
+        <section class="page-section" id="services"style="background-color: #212529;">
             <div class="container">
                 <div class="text-center" style="margin-top: 10px; color:white">
                     <h1 class="section-heading text-uppercase">재난 문자 알리미</h1>
@@ -52,18 +52,18 @@
                     <a href="/update" style="margin-bottom: 10px;" class="btn btn-info">Update</a>
                 </div>
                 
-            <div class="table table-responsive">
-                <table class="table  table-hover">
-                    <thead class="thead-dark">
+            <div class="">
+                <table class="table table-dark table-hover">
+                    <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Loc</th>
+                            <th>Location</th>
                             <th>Content</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for cont in cont_list.items %}
-                        <tr class="table-dark" data-toggle="modal" data-target="#myModal">
+                        <tr data-toggle="modal" data-target="#myModal">
                             <!-- INFO Modal -->
                             <div class="modal fade" id="myModal">
                                 <div class="modal-dialog modal-lg">
@@ -93,8 +93,8 @@
                                 </div>
                             </div>
                             <td>{{ cont.date|strftime }}</td>
-                            {% if cont.location|length > 20 %}
-                            <td>{{ cont.location[:20] }}...</td>
+                            {% if cont.location|length > 10 %}
+                            <td>{{ cont.location[:10] }}...</td>
                             {% else %}
                             <td>{{ cont.location }}</td>
                             {% endif %}
@@ -111,6 +111,8 @@
                     <!-- Previous Page-->
                     {% if cont_list.has_prev %}
                     <li class="page-item"><a class="page-link" href="{{ url_for('index', page = cont_list.prev_num) }}">Previous</a></li>
+                    {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="{{ url_for('index', page = cont_list.prev_num) }}">Previous</a></li>
                     {% endif %}
                     
                     
@@ -119,7 +121,7 @@
                             {% if page_num != cont_list.page %}
                                 <li class="page-item"><a class="page-link" href="{{ url_for('index',page=  page_num) }}">{{ page_num }}</a></li>
                             {% else %}
-                                <li class="active"><a class="page-link" href="{{ url_for('index',page= page_num) }}">{{ page_num }}</a></li>
+                                <li class="page-item active"><a class="page-link" href="{{ url_for('index',page= page_num) }}">{{ page_num }}</a></li>
                             {% endif %}
                         {% else %}
                         <li><span class="ellipsis" style="white-space; nowrap; overflow: hidden; text-overflow : ellipsis"></span></li>
@@ -129,6 +131,8 @@
                     <!-- Next Page -->
                     {% if cont_list.has_next %}
                     <li class="page-item"><a class="page-link" href="{{ url_for('index',page=cont_list.next_num) }}">Next</a></li>
+                    {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="{{ url_for('index',page=cont_list.next_num) }}">Next</a></li>
                     {% endif %}
                     
                 </ul>

@@ -14,11 +14,7 @@ def email_sender(receiver, subject,content):
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = receiver
-    msg.set_content('''
-    Hello
-    Test
-    Success
-    ''')
+    msg.set_content(content)
 
     naver_server = smtplib.SMTP('smtp.naver.com',587)
     naver_server.ehlo()
